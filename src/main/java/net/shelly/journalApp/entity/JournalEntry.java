@@ -16,7 +16,10 @@ import java.util.Date;
 //@Builder
 @Data//lombok for getters and setters
 @Document(collection ="journal_entries")
+<<<<<<< HEAD
 @NoArgsConstructor
+=======
+>>>>>>> f6d407c4bf80b4c5d139e0ec7c343257c674f262
 public class JournalEntry {//pojo class -plane old java object
 
     @Id//zruri nhi hai but de skti hai

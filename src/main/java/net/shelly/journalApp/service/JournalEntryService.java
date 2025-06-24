@@ -2,7 +2,10 @@ package net.shelly.journalApp.service;
 
 import lombok.extern.slf4j.Slf4j;
 import net.shelly.journalApp.entity.JournalEntry;
+<<<<<<< HEAD
 import net.shelly.journalApp.entity.User;
+=======
+>>>>>>> f6d407c4bf80b4c5d139e0ec7c343257c674f262
 import net.shelly.journalApp.repository.JournalEntryRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ public class JournalEntryService {
     //ye whi repository hai jo hmne create kri thi but itka kuch implementation nhi kiya tha
     //blke hmne sirf extend kr di thi mongo db ki repository to ye khud hi
     //generate kr lega sare funciton jo ke repo me hai
+<<<<<<< HEAD
 
     @Autowired
     private UserService userService;
@@ -33,6 +37,12 @@ public class JournalEntryService {
             user.getJournalEntries().add(saved);
             userService.saveEntry(user);
 
+=======
+    public void saveEntry (JournalEntry journalEntry){
+        try {
+            journalEntry.setDate(LocalDateTime.now());
+            JournalEntryRepository.save(journalEntry);
+>>>>>>> f6d407c4bf80b4c5d139e0ec7c343257c674f262
         } catch (Exception e) {
             log.error("Exception",e);
         }
@@ -49,10 +59,14 @@ public class JournalEntryService {
 
     }
 
+<<<<<<< HEAD
     public void deleteById(ObjectId id, String userName){
         User user =userService.findByUserName(userName);
         user.getJournalEntries().removeIf(x->x.getId().equals(id));
         userService.saveEntry(user);//same id pe save chalate hai to update ho jata hai mongodb me
+=======
+    public void deleteById(ObjectId id){
+>>>>>>> f6d407c4bf80b4c5d139e0ec7c343257c674f262
         JournalEntryRepository.deleteById(id);
 
     }
