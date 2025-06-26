@@ -32,4 +32,6 @@ public class User {//pojo class -plane old java object
     @DBRef
     private List<JournalEntry> journalEntries =new ArrayList<>();
 
+    private List <String> roles;//to tell is it user or admin
+
 }
