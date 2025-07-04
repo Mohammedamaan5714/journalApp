@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,27 +23,33 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public List<User> getAllUser(){
-        return userService.getAll();
-    }
+//    @GetMapping
+//    public List<User> getAllUser(){
+//        return userService.getAll();
+//    }only the admin have to have authority to see all the users
 
-    @PostMapping
-    public void createUser(@RequestBody User user ){
-        userService.saveEntry(user);
-    }
 
-    @PutMapping("/{userName}")//alsi hai try catch nhi lgya abhi yad rakhna
-    public ResponseEntity<?> updateUser(@RequestBody User user,@PathVariable String userName){
+
+    @PutMapping//alsi hai try catch nhi lgya abhi yad rakhna
+    public ResponseEntity<?> updateUser(@RequestBody User user){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
         User userInDb = userService.findByUserName(userName);
         if (userInDb != null){
             userInDb.setUserName(user.getUserName());
             userInDb.setPassword(user.getPassword());
-            userService.saveEntry(userInDb);
+            userService.saveNewUser(userInDb);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //delete user add krna hai
+    @DeleteMapping//alsi hai try catch nhi lgya abhi yad rakhna
+    public ResponseEntity<?> deleteUser(@RequestBody User user){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        userService.deleteByUserName(userName);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 }

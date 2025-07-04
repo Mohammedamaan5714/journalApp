@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user !=null){
             return org.springframework.security.core.userdetails.User.builder()
                     .username(user.getUserName())//to get and then set user name to user details for security
-                    .username(user.getPassword())//same for the password we can do it simple way but this is small
+                    .password(user.getPassword())//same for the password we can do it simple way but this is small
                     .roles(user.getRoles().toArray(new String[0]))//getting roles as list convert it into array and then new string 0 resize it accordingly
                     .build();
 

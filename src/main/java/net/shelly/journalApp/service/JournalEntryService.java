@@ -57,12 +57,22 @@ public class JournalEntryService {
 
     }
 
-    public void deleteById(ObjectId id, String userName){
-        User user =userService.findByUserName(userName);
-        user.getJournalEntries().removeIf(x->x.getId().equals(id));
-        userService.saveEntry(user);//same id pe save chalate hai to update ho jata hai mongodb me
-        JournalEntryRepository.deleteById(id);
+    @Transactional
+    public boolean deleteById(ObjectId id, String userName){
+        boolean removed=false;
+        try {
+            User user = userService.findByUserName(userName);
+            removed = user.getJournalEntries().removeIf(x -> x.getId().equals(id));//remove if se true return hota hai
+            if (removed) {
+                userService.saveEntry(user);//same id pe save chalate hai to update ho jata hai mongodb me
+                JournalEntryRepository.deleteById(id);
 
+            }
+        }catch (Exception e){
+            System.out.println(e);
+            throw new RuntimeException("An error occurred while deleting the entry.e");
+        }
+        return removed;
     }
 
 }
